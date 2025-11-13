@@ -17,7 +17,7 @@
 </head>
 <body>
 
-	<h2>Hello World, Nguyễn Trường Minh with HCMUTE</h2>
+	<h2>Hello World, Vietnam number 1!</h2>
 		
 	<a href="logout">Đăng xuất</a>
 
