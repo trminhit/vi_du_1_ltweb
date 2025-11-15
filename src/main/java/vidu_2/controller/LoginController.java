@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import vidu_2.model.User;
 import vidu_2.service.UserService;
 import vidu_2.service.impl.UserServiceimpl;
+import jakarta.servlet.http.Cookie;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
@@ -26,8 +27,19 @@ public class LoginController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath()+ "/waiting");
 			return;
 		}
+		Cookie[] cookies = req.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie: cookies) {
+				if (cookie.getName().equals("username")) { 
+					session = req.getSession(true);
+					session.setAttribute("username", cookie.getValue());
+					resp.sendRedirect(req.getContextPath()+ "/waiting");
+					return;
+				}
+			}
+		}
 		
-		RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/view/login.jsp");
 		rd.forward(req, resp);
 	}
 
@@ -40,13 +52,19 @@ public class LoginController extends HttpServlet {
 		
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
+		
+		String remember = req.getParameter("remember"); 
+		boolean isRememberMe = false;
+		if("on".equals(remember)){
+			isRememberMe = true;
+		}
 
 		String alertMsg="";
 		
 		if(username.isEmpty() || password.isEmpty()){
 			alertMsg = "Tài khoản hoặc mật khẩu không được rỗng";
 			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("/view/login.jsp").forward(req, resp);
 			return;
 		}
 		
@@ -55,11 +73,18 @@ public class LoginController extends HttpServlet {
 		if(user != null) {
 			HttpSession session = req.getSession(true);
 			session.setAttribute("account", user);
-			resp.sendRedirect(req.getContextPath() + "/home");
+			
+			if(isRememberMe){
+				Cookie cookie = new Cookie("username", username); 
+				cookie.setMaxAge(30*60); 
+ 				resp.addCookie (cookie);
+			}
+			
+			resp.sendRedirect(req.getContextPath() + "/waiting"); 
 		} else {
 			alertMsg = "Tài khoản hoặc mật khẩu không đúng";
 			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("/view/login.jsp").forward(req, resp);
 		}
 	}
 }

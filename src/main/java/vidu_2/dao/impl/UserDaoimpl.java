@@ -15,7 +15,7 @@ public class UserDaoimpl implements UserDao {
 
 	@Override
 	public User get(String username) {
-		String sql = "SELECT * FROM `user` WHERE username = ? ";
+		String sql = "SELECT * FROM `User` WHERE username = ? ";
 		try {
 			conn = DBMySQLConnect.getConnection();
 			ps = conn.prepareStatement(sql);
@@ -25,85 +25,179 @@ public class UserDaoimpl implements UserDao {
 				User user = new User();
 				user.setId(rs.getInt("id"));
 				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				return user; }
+				user.setUsername(rs.getString("username")); 
+				user.setFullName(rs.getString("fullname")); 
+				user.setPassword(rs.getString("password")); 
+				user.setAvatar(rs.getString("avatar"));
+				user.setRoleid(rs.getInt("roleid")); 
+				user.setPhone(rs.getString("phone"));
+				user.setCreatedDate(rs.getDate("createdDate"));
+				return user;
+			}
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void insert(User user) {
-	    String sql = "INSERT INTO `user`(username, email, password) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO `User`(email, username, fullname, password, avatar, roleid, phone, createddate) VALUES (?,?,?,?,?,?,?,?)";
 
-	    try {
-	        conn = DBMySQLConnect.getConnection();
-	        ps = conn.prepareStatement(sql);
-	        ps.setString(1, user.getUsername());
-	        ps.setString(2, user.getEmail());
-	        ps.setString(3, user.getPassword());
-	        ps.executeUpdate();
+		try {
+			conn = DBMySQLConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, user.getEmail());
+			ps.setString(2, user.getUsername());
+			ps.setString(3, user.getFullName());
+			ps.setString(4, user.getPassword());
+			ps.setString(5, user.getAvatar());
+			ps.setInt(6, user.getRoleid());
+			ps.setString(7, user.getPhone());
+			ps.setDate(8, user.getCreatedDate());
+			ps.executeUpdate();
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try { if (ps != null) ps.close(); } catch (Exception e) {}
-	        try { if (conn != null) conn.close(); } catch (Exception e) {}
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
 	}
+
+	@Override
+	public boolean checkExistPhone(String phone) {
+		boolean duplicate = false;
+		String sql = "SELECT * FROM `user` WHERE phone = ?";
+		try {
+			conn = DBMySQLConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, phone);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				duplicate = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return duplicate;
+	}
+
 	@Override
 	public boolean checkExistEmail(String email) {
-	    boolean duplicate = false;
-	    String sql = "SELECT * FROM `user` WHERE email = ?";
+		boolean duplicate = false;
+		String sql = "SELECT * FROM `user` WHERE email = ?";
 
-	    try {
-	        conn = DBMySQLConnect.getConnection();
-	        ps = conn.prepareStatement(sql);
-	        ps.setString(1, email);
-	        rs = ps.executeQuery();
+		try {
+			conn = DBMySQLConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
 
-	        if (rs.next()) {
-	            duplicate = true; // Có dòng nào khớp email -> email đã tồn tại
-	        }
+			if (rs.next()) {
+				duplicate = true; 
+			}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try { if (rs != null) rs.close(); } catch (Exception e) {}
-	        try { if (ps != null) ps.close(); } catch (Exception e) {}
-	        try { if (conn != null) conn.close(); } catch (Exception e) {}
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
 
-	    return duplicate;
+		return duplicate;
 	}
-	
+
 	@Override
 	public boolean checkExistUsername(String username) {
-	    boolean duplicate = false;
-	    String sql = "SELECT * FROM `user` WHERE username = ?";
+		boolean duplicate = false;
+		String sql = "SELECT * FROM `user` WHERE username = ?";
 
-	    try {
-	        conn = DBMySQLConnect.getConnection();  
-	        ps = conn.prepareStatement(sql);
-	        ps.setString(1, username);
-	        rs = ps.executeQuery();
+		try {
+			conn = DBMySQLConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
 
-	        if (rs.next()) {
-	            duplicate = true; // có bản ghi -> username đã tồn tại
-	        }
+			if (rs.next()) {
+				duplicate = true; 
+			}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try { if (rs != null) rs.close(); } catch (Exception e) {}
-	        try { if (ps != null) ps.close(); } catch (Exception e) {}
-	        try { if (conn != null) conn.close(); } catch (Exception e) {}
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
 
-	    return duplicate;
+		return duplicate;
 	}
-
 
 }

@@ -11,9 +11,7 @@ public class UserServiceimpl implements UserService {
 	public User login(String username, String password) {
 		User user = this.get(username);
 		System.out.println("User tìm thấy trong DB: " + user);
-		// So sánh mật khẩu (lưu ý: slide đang so sánh clear text, thực tế nên hash
-		// password)
-		if (user != null && password.equals(user.getPassword())) { // [cite: 259]
+		if (user != null && password.equals(user.getPassword())) { 
 			return user;
 		}
 		return null;
@@ -23,12 +21,15 @@ public class UserServiceimpl implements UserService {
 	    userDao.insert(user);
 	}
 
-	public boolean register(String username, String email, String password) {
+	public boolean register(String email, String password, String username, String fullname, String phone) {
 		if (userDao.checkExistUsername(username)) {
 			return false;
 		}
-		userDao.insert(new User(username, email, password));
-		return true; 
+		long millis = System.currentTimeMillis();
+		java.sql.Date date = new java.sql.Date(millis);
+		
+		userDao.insert(new User(email, username, fullname, password, null, 5, phone, date));
+		return true;
 	}
 	public boolean checkExistEmail(String email) {
 		return userDao.checkExistEmail(email);
@@ -36,6 +37,10 @@ public class UserServiceimpl implements UserService {
 	
 	public boolean checkExistUsername(String username) {
 		return userDao.checkExistUsername(username);
+	}
+	@Override
+	public boolean checkExistPhone(String phone) {
+		return userDao.checkExistPhone(phone);
 	}
 
 	public User get(String username) {

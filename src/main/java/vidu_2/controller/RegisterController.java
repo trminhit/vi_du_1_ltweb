@@ -46,8 +46,11 @@ public class RegisterController extends HttpServlet {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		String email = req.getParameter("email");
+		String fullname = req.getParameter("fullname");
+		String phone = req.getParameter("phone");
 		
 		String re_password = req.getParameter("re_password");
+		
 		
 		UserService service = new UserServiceimpl();
 		String alertMsg =
@@ -73,8 +76,14 @@ public class RegisterController extends HttpServlet {
 
 			return;
 		}
+		if (service.checkExistPhone(phone)) {
+			alertMsg = "Số điện thoại đã tồn tại!";
+			req.setAttribute("alert", alertMsg);
+			req.getRequestDispatcher(REGISTER).forward(req, resp);
+			return;
+		}
 		// Gọi service đăng ký user
-        boolean isSuccess = service.register(username, email, password);
+		boolean isSuccess = service.register(email, password, username, fullname, phone);
 
         if (isSuccess) {
             alertMsg = "Đăng ký thành công! Vui lòng đăng nhập.";
