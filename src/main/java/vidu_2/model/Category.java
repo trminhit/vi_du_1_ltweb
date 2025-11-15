@@ -1,4 +1,4 @@
-package vidu_2.controller;
+package vidu_2.model;
 
 import java.io.Serializable;
 

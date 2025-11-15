@@ -30,8 +30,17 @@ INSERT INTO `User` (`username`, `email`, `password`, `fullname`, `roleid`, `phon
 VALUES
     ('minhnt', 'minhnt@gmail.com', '12345', 'Nguyễn Trường Minh', 2, '0123456789');
 
-SELECT '--- Dữ liệu trong bảng GiaoVien ---' AS ThongBao;
-SELECT * FROM `GiaoVien`;
 
-SELECT '--- Dữ liệu trong bảng User ---' AS ThongBao;
-SELECT * FROM `User`;
+/* --- Bảng Category --- */
+CREATE TABLE IF NOT EXISTS `Category` (
+    `cateid` INT AUTO_INCREMENT PRIMARY KEY,
+    `catename` VARCHAR(255) NOT NULL,
+    `icon` VARCHAR(255) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/* Thêm dữ liệu mẫu cho Category */
+INSERT INTO `Category` (`catename`, `icon`)
+VALUES
+    ('Quần Áo Nam', NULL),
+    ('Quần Áo Nữ', NULL);
+

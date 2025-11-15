@@ -46,4 +46,14 @@ public class UserServiceimpl implements UserService {
 	public User get(String username) {
 		return userDao.get(username);
 	}
+	
+	@Override
+	public User getByEmail(String email) {
+	    return userDao.getByEmail(email);
+	}
+
+	@Override
+	public void updatePassword(String email, String newPassword) {
+	    userDao.updatePassword(email, newPassword);
+	}
 }

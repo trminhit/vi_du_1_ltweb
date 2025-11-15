@@ -199,5 +199,54 @@ public class UserDaoimpl implements UserDao {
 
 		return duplicate;
 	}
+	
+	@Override
+	public User getByEmail(String email) {
+		String sql = "SELECT * FROM `User` WHERE email = ? ";
+		try {
+			conn = DBMySQLConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setEmail(rs.getString("email"));
+				user.setUsername(rs.getString("username")); 
+				user.setFullName(rs.getString("fullname")); 
+				user.setPassword(rs.getString("password")); 
+				user.setAvatar(rs.getString("avatar"));
+				user.setRoleid(rs.getInt("roleid")); 
+				user.setPhone(rs.getString("phone"));
+				user.setCreatedDate(rs.getDate("createdDate"));
+				return user;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { if (rs != null) rs.close(); } catch (Exception e) {}
+			try { if (ps != null) ps.close(); } catch (Exception e) {}
+			try { if (conn != null) conn.close(); } catch (Exception e) {}
+		}
+		return null;
+	}
+
+
+	@Override
+	public void updatePassword(String email, String newPassword) {
+		String sql = "UPDATE `User` SET password = ? WHERE email = ?";
+		try {
+			conn = DBMySQLConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, newPassword);
+			ps.setString(2, email);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { if (ps != null) ps.close(); } catch (Exception e) {}
+			try { if (conn != null) conn.close(); } catch (Exception e) {}
+		}
+	}
 
 }
