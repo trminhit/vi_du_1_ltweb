@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <!DOCTYPE html>
 <html>
@@ -14,32 +15,43 @@
 </head>
 <body class="container mt-4">
 
-	<h2>Quản lý Danh mục sản phẩm</h2>
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h2>Quản lý Danh mục sản phẩm</h2>
 
-	<a href="<c:url value='/admin/category/add' />" class="btn btn-primary mb-3">
-		Thêm danh mục mới
-	</a>
+		<a href="<c:url value='/logout' />" class="btn btn-danger">Đăng
+			xuất</a>
+	</div>
+
+	<a href="<c:url value='/admin/category/add' />"
+		class="btn btn-primary mb-3"> Thêm danh mục mới </a>
 
 	<table class="table table-bordered table-striped">
 		<thead class="table-dark">
 			<tr>
-				<th>ID (hoặc STT)</th>
+				<th>ID</th>
+				<th>Hình ảnh</th>
 				<th>Tên danh mục</th>
 				<th>Hành động</th>
 			</tr>
 		</thead>
 		<tbody>
-			
+
 			<c:forEach items="${cateList}" var="cate" varStatus="STT">
 				<tr>
 					<td>${cate.cateid}</td>
+
+					<td><c:url value="/image?fname=${cate.icon}" var="imgUrl"></c:url>
+						<img src="${imgUrl}" alt="Ảnh"
+						style="width: 100px; height: auto; border: 1px solid #ddd;">
+					</td>
+
 					<td>${cate.catename}</td>
-					
-					<td>
-						<a href="<c:url value='/admin/category/edit?id=${cate.cateid }'/>">Sửa</a>
-						| 
-						<a href="<c:url value='/admin/category/delete?id=${cate.cateid }'/>" 
-						   onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">Xóa</a>
+
+					<td><a
+						href="<c:url value='/admin/category/edit?id=${cate.cateid }'/>">Sửa</a>
+						| <a
+						href="<c:url value='/admin/category/delete?id=${cate.cateid }'/>"
+						onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">Xóa</a>
 					</td>
 				</tr>
 			</c:forEach>
@@ -47,7 +59,7 @@
 		</tbody>
 	</table>
 
-	<a href="<c:url value='/home' />">Quay về trang chủ</a>
+	<br />
 
 </body>
 </html>

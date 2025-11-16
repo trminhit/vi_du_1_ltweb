@@ -18,16 +18,27 @@
 	
 	<c:url value="/admin/category/edit" var="editURL" />
 	
-	<form action="${editURL}" method="post">
+	<form action="${editURL}" method="post" enctype="multipart/form-data">
 		
 		<input type="hidden" name="id" value="${category.cateid}">
 		
-		
 		<div class="mb-3">
 			<label for="catename" class="form-label">Tên danh mục:</label>
-			
 			<input type="text" class="form-control" id="catename"
 				name="catename" value="${category.catename}" required>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Ảnh đại diện cũ:</label>
+			<div>
+				<c:url value="/image?fname=${category.icon}" var="imgUrl"></c:url>
+				<img src="${imgUrl}" alt="Ảnh cũ" style="width: 150px; height: auto; border: 1px solid #ddd;">
+			</div>
+		</div>
+		
+		<div class="mb-3">
+			<label for="icon" class="form-label">Tải lên ảnh mới (để thay thế):</label>
+			<input type="file" class="form-control" id="icon" name="icon">
 		</div>
 
 		<button type="submit" class="btn btn-success">Cập nhật</button>

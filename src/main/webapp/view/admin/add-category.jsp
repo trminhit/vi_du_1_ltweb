@@ -18,12 +18,17 @@
 	
 	<c:url value="/admin/category/add" var="addURL" />
 	
-	<form action="${addURL}" method="post">
+	<form action="${addURL}" method="post" enctype="multipart/form-data">
 		<div class="mb-3">
 			<label for="catename" class="form-label">Tên danh mục:</label>
 			
 			<input type="text" class="form-control" id="catename"
 				name="catename" placeholder="Ví dụ: Quần Áo Trẻ Em" required>
+		</div>
+
+		<div class="mb-3">
+			<label for="icon" class="form-label">Ảnh đại diện (Icon):</label>
+			<input type="file" class="form-control" id="icon" name="icon">
 		</div>
 
 		<button type="submit" class="btn btn-primary">Thêm mới</button>

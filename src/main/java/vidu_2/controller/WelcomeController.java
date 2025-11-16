@@ -8,24 +8,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-@WebServlet(urlPatterns = "/home")
-public class HomeController extends HttpServlet {
+@WebServlet(urlPatterns = "/welcome")
+public class WelcomeController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession(false);
-		if (session == null || session.getAttribute("account") == null) {
-			// Nếu chưa đăng nhập, đá về trang Welcome
-			resp.sendRedirect(req.getContextPath() + "/welcome");
-			return;
-		}
-		
-		// Nếu đã đăng nhập, thì mới forward đến trang home
-		RequestDispatcher rd = req.getRequestDispatcher("/view/home.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/view/welcome.jsp");
 		rd.forward(req, resp);
 	}
 }

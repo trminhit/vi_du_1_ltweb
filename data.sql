@@ -28,7 +28,7 @@ VALUES
 
 INSERT INTO `User` (`username`, `email`, `password`, `fullname`, `roleid`, `phone`)
 VALUES
-    ('minhnt', 'minhnt@gmail.com', '12345', 'Nguyễn Trường Minh', 2, '0123456789');
+    ('minhnt', 'minhnt@gmail.com', '12345', 'Nguyễn Trường Minh', 1, '0123456789');
 
 
 /* --- Bảng Category --- */
@@ -41,6 +41,6 @@ CREATE TABLE IF NOT EXISTS `Category` (
 /* Thêm dữ liệu mẫu cho Category */
 INSERT INTO `Category` (`catename`, `icon`)
 VALUES
-    ('Quần Áo Nam', NULL),
-    ('Quần Áo Nữ', NULL);
+    ('Quần Áo Nam', 'category/do_nam.png'),
+    ('Quần Áo Nữ', 'category/do_nu.png');
 
